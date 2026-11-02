@@ -7,175 +7,142 @@
 <title>Merry Christmas, Please Don't Call</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400&display=swap');
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
   height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 45%, #a51c32 0%, #74101f 48%, #350810 100%);
+  background: radial-gradient(circle at center, #a51d32, #650d1c 65%, #27050c);
   color: white;
   font-family: 'DM Sans', sans-serif;
 }
 
-/* Background glow */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center,
-    transparent 10%, rgba(20,0,5,.35) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Snow */
-.snow {
-  position: fixed;
-  top: -15px;
-  color: white;
-  pointer-events: none;
-  z-index: 2;
-  animation: snowfall linear infinite;
-  opacity: .8;
-}
-
-@keyframes snowfall {
-  0% {
-    transform: translateY(-10vh) translateX(0) rotate(0);
-    opacity: 0;
-  }
-  10% { opacity: .8; }
-  90% { opacity: .7; }
-  100% {
-    transform: translateY(110vh) translateX(50px) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Main layout */
 .container {
   height: 100vh;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
   position: relative;
-  z-index: 3;
-  padding: 25px;
 }
 
-.top-label {
+.top {
   position: absolute;
   top: 35px;
-  text-align: center;
-  letter-spacing: 5px;
   font-size: 10px;
-  color: #f2c4c9;
-  opacity: .8;
+  letter-spacing: 5px;
+  color: #f3c5ca;
 }
 
 h1 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(32px, 7vw, 65px);
+  font-size: clamp(38px, 8vw, 68px);
   font-weight: 400;
-  text-align: center;
-  letter-spacing: 1px;
-  text-shadow: 0 3px 30px rgba(0,0,0,.2);
 }
 
 .subtitle {
-  color: #efb9c0;
-  font-size: 12px;
-  letter-spacing: 3px;
-  margin-top: 10px;
+  color: #f1b5bd;
+  font-size: 11px;
+  letter-spacing: 5px;
+  margin-top: 5px;
 }
 
-/* Lyrics area */
-.lyrics-area {
+.lyric-stage {
   position: relative;
   width: 100%;
   height: 260px;
-  margin-top: 35px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  margin-top: 30px;
   overflow: hidden;
 }
 
 .bubble {
   position: absolute;
-  max-width: min(85%, 650px);
-  padding: 18px 28px;
-  border: 1px solid rgba(255,255,255,.22);
-  background: rgba(255,255,255,.09);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  max-width: 85%;
+  padding: 20px 26px;
+  border: 1px solid rgba(255,255,255,.3);
   border-radius: 25px;
+  background: rgba(255,255,255,.10);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0,0,0,.15);
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(20px, 4vw, 32px);
-  text-align: center;
+  font-size: clamp(21px, 4.5vw, 33px);
   line-height: 1.4;
-  box-shadow: 0 10px 40px rgba(30,0,0,.15);
-  animation: bubbleRise 4.5s ease forwards;
+  animation: floatUp var(--duration) linear forwards;
 }
 
-@keyframes bubbleRise {
+@keyframes floatUp {
   0% {
     opacity: 0;
-    transform: translateY(65px) scale(.92);
+    transform: translateY(65px) scale(.94);
     filter: blur(5px);
   }
-  15% {
+  12% {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
   }
-  70% {
+  75% {
     opacity: 1;
-    transform: translateY(-35px) scale(1);
+    transform: translateY(-40px) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateY(-115px) scale(.96);
+    transform: translateY(-110px) scale(.96);
     filter: blur(3px);
   }
 }
 
-/* Controls */
 .controls {
   display: flex;
-  gap: 12px;
-  margin-top: 35px;
+  gap: 10px;
+  margin-top: 30px;
 }
 
 button {
-  padding: 12px 25px;
-  border-radius: 30px;
-  border: 1px solid rgba(255,255,255,.35);
+  border: 1px solid rgba(255,255,255,.4);
   background: rgba(255,255,255,.1);
   color: white;
-  font-size: 12px;
-  letter-spacing: 1px;
+  padding: 12px 22px;
+  border-radius: 30px;
   cursor: pointer;
+  font-size: 12px;
   transition: .3s;
 }
 
 button:hover {
   background: rgba(255,255,255,.25);
-  transform: translateY(-2px);
 }
 
-button:disabled {
-  opacity: .4;
-  cursor: default;
+.progress {
+  width: 220px;
+  height: 3px;
+  background: rgba(255,255,255,.2);
+  border-radius: 10px;
+  margin-top: 25px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: white;
+}
+
+.time {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #f5c5cb;
 }
 
 .footer {
@@ -183,176 +150,252 @@ button:disabled {
   bottom: 28px;
   font-size: 10px;
   letter-spacing: 3px;
-  color: #eab3ba;
-  opacity: .65;
+  color: #eab5bd;
 }
 
-/* Progress */
-.progress {
-  width: min(220px, 60vw);
-  height: 2px;
-  background: rgba(255,255,255,.2);
-  margin-top: 25px;
-  border-radius: 5px;
-  overflow: hidden;
+/* Snow */
+.snow {
+  position: fixed;
+  top: -20px;
+  color: white;
+  pointer-events: none;
+  z-index: 5;
+  animation: snowfall linear infinite;
 }
 
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: #fff;
-  transition: width .3s linear;
+@keyframes snowfall {
+  to {
+    transform: translate(45px, 110vh) rotate(360deg);
+  }
 }
 
-@media(max-width: 500px) {
-  .lyrics-area { height: 240px; }
-  .bubble { padding: 15px 20px; }
+@media(max-width:500px) {
+  .lyric-stage {
+    height: 250px;
+  }
+  .controls {
+    gap: 6px;
+  }
+  button {
+    padding: 11px 15px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div id="snow-container"></div>
+<div id="snow"></div>
 
 <main class="container">
 
-  <div class="top-label">A WINTER MEMORY · 2026</div>
+  <div class="top">A CHRISTMAS MEMORY</div>
 
   <h1>Merry Christmas</h1>
-  <div class="subtitle">please don't call</div>
+  <div class="subtitle">PLEASE DON'T CALL</div>
 
-  <div class="lyrics-area" id="lyricsArea">
-    <div style="color:#f1c4ca; font-size:13px; letter-spacing:2px;">
+  <div class="lyric-stage" id="stage">
+    <p style="color:#f3c5ca;font-size:13px">
       Press play to begin...
-    </div>
+    </p>
   </div>
 
   <div class="controls">
-    <button onclick="startLyrics()" id="playBtn">▶ PLAY</button>
-    <button onclick="pauseLyrics()">Ⅱ PAUSE</button>
-    <button onclick="restartLyrics()">↻ RESTART</button>
+    <button onclick="play()">▶ PLAY</button>
+    <button onclick="pause()">Ⅱ PAUSE</button>
+    <button onclick="restart()">↻ RESTART</button>
   </div>
 
   <div class="progress">
-    <div class="progress-bar" id="progress"></div>
+    <div class="progress-bar" id="bar"></div>
   </div>
+
+  <div class="time" id="time">00:00</div>
 
   <div class="footer">SOME MEMORIES NEVER FADE</div>
 
 </main>
 
 <script>
-// Snow generator
-const snowContainer = document.getElementById('snow-container');
 
-for (let i = 0; i < 65; i++) {
-  const snow = document.createElement('div');
-  snow.className = 'snow';
-  snow.innerHTML = Math.random() > .5 ? '❄' : '•';
+// =================================
+// 1. LYRICS + DURASI SETIAP BAIT
+// =================================
 
-  snow.style.left = Math.random() * 100 + 'vw';
-  snow.style.fontSize = (Math.random() * 9 + 4) + 'px';
-  snow.style.animationDuration = (Math.random() * 8 + 6) + 's';
-  snow.style.animationDelay = (Math.random() * 10) + 's';
+// Format: ["Lirik", durasi dalam detik]
 
-  snowContainer.appendChild(snow);
-}
-
-// Lyrics
 const lyrics = [
-  { text: "Oh, golden boy, don't act like you were kind", time: 0 },
-  { text: "You were mine, but you were awful every time", time: 5 },
-  { text: "So don't tell them what you told me", time: 10 },
-  { text: "Don't hold me like you know me", time: 14 },
-  { text: "I would rather burn forever", time: 18 },
-  { text: "But you should know that I died slow", time: 22 },
-  { text: "Running through the halls of your haunted home", time: 27 },
-  { text: "And the toughest part is that we both know", time: 32 },
-  { text: "What happened to you", time: 37 },
-  { text: "Why you're out on your own", time: 41 },
-  { text: "Merry Christmas, please don't call", time: 46 }
+  ["Oh, golden boy, don't act like you were kind", 4.5],
+  ["You were mine, but you were awful every time", 4.5],
+  ["So don't tell them what you told me", 3.5],
+  ["Don't hold me like you know me", 3.2],
+  ["I would rather burn forever", 3.5],
+  ["But you should know that I died slow", 3.8],
+  ["Running through the halls of your haunted home", 4.5],
+  ["And the toughest part is that we both know", 4.2],
+  ["What happened to you", 2.2],
+  ["Why you're out on your own", 2.5],
+  ["Merry Christmas, please don't call", 4.5]
 ];
 
-// Timing in seconds.
-// Adjust these values to match your audio.
+// Total waktu dihitung otomatis
+const totalDuration = lyrics.reduce(
+  (sum, item) => sum + item[1], 0
+);
 
-const lyricsArea = document.getElementById('lyricsArea');
-const progress = document.getElementById('progress');
+// =================================
+// 2. SNOW EFFECT
+// =================================
 
-let current = 0;
-let elapsed = 0;
+const snow = document.getElementById("snow");
+
+for (let i = 0; i < 65; i++) {
+  const flake = document.createElement("div");
+
+  flake.className = "snow";
+  flake.textContent = Math.random() > .5 ? "❄" : "•";
+
+  flake.style.left = Math.random() * 100 + "vw";
+  flake.style.fontSize = (Math.random() * 10 + 5) + "px";
+  flake.style.opacity = Math.random() * .7 + .2;
+  flake.style.animationDuration = (Math.random() * 8 + 6) + "s";
+  flake.style.animationDelay = (Math.random() * -15) + "s";
+
+  snow.appendChild(flake);
+}
+
+// =================================
+// 3. LYRIC ENGINE
+// =================================
+
+const stage = document.getElementById("stage");
+const bar = document.getElementById("bar");
+const timeDisplay = document.getElementById("time");
+
+let index = 0;
+let remaining = 0;
 let playing = false;
 let timer = null;
-let startTime = 0;
+let lastStart = 0;
+let elapsed = 0;
+let activeBubble = null;
 
-function showLyric(text) {
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
+function formatTime(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = Math.floor(seconds % 60);
+
+  return String(min).padStart(2, "0") + ":" +
+         String(sec).padStart(2, "0");
+}
+
+function showLyric() {
+  const [text, duration] = lyrics[index];
+
+  if (activeBubble) {
+    activeBubble.remove();
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
   bubble.textContent = text;
 
-  lyricsArea.appendChild(bubble);
+  bubble.style.setProperty(
+    "--duration", duration + "s"
+  );
 
-  setTimeout(() => {
-    bubble.remove();
-  }, 4500);
+  stage.appendChild(bubble);
+  activeBubble = bubble;
 }
 
-function updateLyrics() {
-  const now = (Date.now() - startTime) / 1000;
+function nextLyric() {
+  index++;
 
-  while (
-    current < lyrics.length &&
-    now >= lyrics[current].time
-  ) {
-    showLyric(lyrics[current].text);
-    current++;
-  }
-
-  const duration = 50;
-  progress.style.width =
-    Math.min((now / duration) * 100, 100) + '%';
-
-  if (now >= duration && current >= lyrics.length) {
-    pauseLyrics();
+  if (index >= lyrics.length) {
+    pause();
     return;
   }
+
+  showLyric();
+  remaining = lyrics[index][1];
+
+  lastStart = Date.now();
+
+  timer = setTimeout(nextLyric, remaining * 1000);
 }
 
-function startLyrics() {
-  if (playing) return;
+function updateProgress() {
+  const progress = (elapsed / totalDuration) * 100;
+  bar.style.width = Math.min(progress, 100) + "%";
+  timeDisplay.textContent = formatTime(elapsed);
+}
+
+function play() {
+  if (playing || index >= lyrics.length) return;
 
   playing = true;
-  startTime = Date.now() - elapsed * 1000;
 
-  updateLyrics();
-  timer = setInterval(updateLyrics, 100);
+  if (index === 0 && remaining === 0) {
+    showLyric();
+    remaining = lyrics[0][1];
+  }
+
+  lastStart = Date.now();
+
+  timer = setTimeout(nextLyric, remaining * 1000);
+
+  // Update progress continuously
+  progressLoop();
 }
 
-function pauseLyrics() {
+function progressLoop() {
   if (!playing) return;
 
-  elapsed = (Date.now() - startTime) / 1000;
+  elapsed = totalDuration -
+    (remaining + lyrics.slice(index + 1)
+      .reduce((sum, item) => sum + item[1], 0));
+
+  elapsed += (Date.now() - lastStart) / 1000;
+
+  updateProgress();
+
+  if (playing) {
+    requestAnimationFrame(progressLoop);
+  }
+}
+
+function pause() {
+  if (!playing) return;
+
+  const passed = (Date.now() - lastStart) / 1000;
+
+  remaining = Math.max(0, remaining - passed);
+
+  clearTimeout(timer);
   playing = false;
-  clearInterval(timer);
+
+  if (activeBubble) {
+    activeBubble.style.animationPlayState = "paused";
+  }
 }
 
-function restartLyrics() {
-  pauseLyrics();
+function restart() {
+  clearTimeout(timer);
 
-  current = 0;
+  playing = false;
+  index = 0;
+  remaining = 0;
   elapsed = 0;
-  startTime = 0;
 
-  lyricsArea.innerHTML = `
-    <div style="color:#f1c4ca;font-size:13px;letter-spacing:2px;">
-      Press play to begin...
-    </div>`;
+  if (activeBubble) activeBubble.remove();
 
-  progress.style.width = '0%';
+  activeBubble = null;
 
-  startLyrics();
+  bar.style.width = "0%";
+  timeDisplay.textContent = "00:00";
+
+  play();
 }
+
 </script>
 
 </body>
