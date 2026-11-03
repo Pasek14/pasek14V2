@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merry Christmas - Please Don't Call</title>
+<title>Merry Christmas - Bleachers</title>
 
 <style>
 * {
@@ -15,18 +15,18 @@ body {
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
-  font-family: Georgia, serif;
   color: white;
+  font-family: Georgia, serif;
   background:
-    radial-gradient(ellipse at 50% 20%, #8d1725 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 15%, #8d1725 0%, transparent 55%),
     linear-gradient(160deg, #210609, #510b16 55%, #170306);
 }
 
 .container {
   position: relative;
   z-index: 2;
-  width: 100%;
   height: 100vh;
+  min-height: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,25 +34,32 @@ body {
 }
 
 .heading {
-  text-align: center;
   flex-shrink: 0;
+  text-align: center;
   margin-bottom: 15px;
 }
 
 .heading h1 {
-  font-size: clamp(30px, 6vw, 55px);
   margin: 0;
+  font-size: clamp(30px, 6vw, 55px);
   font-weight: normal;
   letter-spacing: 2px;
   text-shadow: 0 0 20px #ff5268;
 }
 
-.heading p {
-  margin-top: 8px;
+.heading .song {
+  margin: 9px 0 0;
+  color: #f4c2c9;
   font-family: Arial, sans-serif;
   font-size: 11px;
-  letter-spacing: 6px;
-  color: #ffc5cb;
+  letter-spacing: 5px;
+}
+
+.heading .artist {
+  margin: 9px 0 0;
+  color: #d89aa5;
+  font-size: 14px;
+  font-style: italic;
 }
 
 .stage {
@@ -63,53 +70,50 @@ body {
   overflow: hidden;
 }
 
+/* Gelembung lirik */
 .bubble {
   position: absolute;
-  left: 50%;
   bottom: -90px;
   width: max-content;
-  max-width: min(85%, 570px);
+  max-width: min(78%, 570px);
   padding: 13px 21px;
-  border: 1px solid rgba(255, 220, 225, .3);
+
+  border: 1px solid rgba(255, 220, 225, .32);
   border-radius: 24px;
-  background: rgba(255, 235, 238, .13);
-  backdrop-filter: blur(9px);
+
+  background: rgba(255, 235, 238, .14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
   box-shadow: 0 5px 25px rgba(0, 0, 0, .18);
+
   color: #fff4f5;
   font-family: Arial, sans-serif;
   font-size: clamp(14px, 2.5vw, 19px);
   line-height: 1.5;
   text-align: center;
   overflow-wrap: anywhere;
+
   transform: translateX(-50%);
-  animation: rise var(--rise-duration) linear forwards;
   will-change: transform;
 }
 
 .bubble::before {
   content: "";
   position: absolute;
+  top: 8px;
+  left: 13px;
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgba(255,255,255,.35);
-  top: 7px;
-  left: 12px;
+  background: rgba(255,255,255,.4);
 }
 
-@keyframes rise {
-  from {
-    transform: translate(-50%, 0);
-  }
-  to {
-    transform: translate(calc(-50% + var(--drift)), -125vh);
-  }
-}
-
+/* Kontrol */
 .controls {
   display: flex;
-  gap: 12px;
   justify-content: center;
+  gap: 12px;
   padding: 14px 0 4px;
   flex-shrink: 0;
 }
@@ -122,42 +126,47 @@ button {
   background: rgba(255,255,255,.12);
   font-size: 13px;
   cursor: pointer;
-  transition: .2s;
+  transition: background .2s;
 }
 
 button:hover {
   background: rgba(255,255,255,.25);
 }
 
+button:active {
+  transform: scale(.96);
+}
+
 .progress {
   width: min(300px, 80%);
   height: 3px;
-  background: rgba(255,255,255,.2);
-  border-radius: 10px;
-  overflow: hidden;
   margin-top: 7px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(255,255,255,.2);
   flex-shrink: 0;
 }
 
 .progress-fill {
-  height: 100%;
   width: 0%;
+  height: 100%;
   background: #ffc1ca;
 }
 
 .time {
   margin-top: 7px;
-  font: 11px Arial, sans-serif;
   color: #eeb9c0;
+  font: 11px Arial, sans-serif;
   flex-shrink: 0;
 }
 
+/* Salju */
 .snow {
   position: fixed;
   inset: 0;
-  pointer-events: none;
-  overflow: hidden;
   z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .flake {
@@ -183,8 +192,8 @@ button:hover {
     font-size: 30px;
   }
 
-  .heading p {
-    margin-top: 4px;
+  .heading {
+    margin-bottom: 8px;
   }
 }
 </style>
@@ -198,7 +207,8 @@ button:hover {
 
   <header class="heading">
     <h1>Merry Christmas</h1>
-    <p>PLEASE DON'T CALL</p>
+    <p class="song">PLEASE DON'T CALL</p>
+    <p class="artist">by Bleachers</p>
   </header>
 
   <section class="stage" id="stage"></section>
@@ -218,6 +228,11 @@ button:hover {
 </main>
 
 <script>
+
+/* =================================
+   DATA LIRIK DAN TIMESTAMP
+================================= */
+
 const lyrics = [
   ["I would rather burn forever", 1, 3],
   ["But you should know", 3, 5],
@@ -233,6 +248,10 @@ const lyrics = [
 
 const totalDuration = 28;
 
+/* =================================
+   ELEMENT
+================================= */
+
 const stage = document.getElementById("stage");
 const progress = document.getElementById("progress");
 const timeDisplay = document.getElementById("time");
@@ -241,93 +260,109 @@ const playBtn = document.getElementById("playBtn");
 let startTime = 0;
 let elapsed = 0;
 let running = false;
+let finished = false;
 let animationFrame = null;
 let nextLyric = 0;
-let typingTimers = [];
-let activeAnimations = [];
-let typingJobs = [];
+
+const activeAnimations = [];
+
+/* =================================
+   FORMAT WAKTU
+================================= */
 
 function formatTime(seconds) {
   return "00:" + String(Math.floor(seconds)).padStart(2, "0");
 }
 
-/* Efek mengetik */
-function typeText(element, text, duration, job) {
-  let index = 0;
-  const speed = Math.max(35, Math.min(75, duration * 1000 / text.length));
+/* =================================
+   POSISI GELEMBUNG
+================================= */
 
-  function type() {
-    if (!running) return;
+const positions = [
+  { left: "20%", drift: "-15px" },
+  { left: "78%", drift: "15px" },
+  { left: "48%", drift: "-10px" },
+  { left: "28%", drift: "12px" },
+  { left: "75%", drift: "-12px" },
+  { left: "52%", drift: "15px" }
+];
 
-    element.textContent = text.slice(0, index + 1);
-    index++;
+let lastPosition = -1;
 
-    if (index < text.length) {
-      job.timer = setTimeout(type, speed);
-      typingTimers.push(job.timer);
-    }
-  }
+function getPosition() {
+  let index;
 
-  type();
+  do {
+    index = Math.floor(Math.random() * positions.length);
+  } while (index === lastPosition);
+
+  lastPosition = index;
+  return positions[index];
 }
 
-/* Tunggu gelembung terlihat utuh */
-function waitForBubble(bubble, textElement, text, duration, job) {
-  if (!running) return;
+/* =================================
+   MEMBUAT GELEMBUNG
+================================= */
 
-  const rect = bubble.getBoundingClientRect();
-  const stageRect = stage.getBoundingClientRect();
-
-  const fullyVisible =
-    rect.top >= stageRect.top &&
-    rect.bottom <= stageRect.bottom;
-
-  if (fullyVisible) {
-    typeText(textElement, text, duration, job);
-    return;
-  }
-
-  job.timer = setTimeout(() => {
-    waitForBubble(bubble, textElement, text, duration, job);
-  }, 80);
-
-  typingTimers.push(job.timer);
-}
-
-/* Membuat gelembung */
 function createBubble(text, duration) {
   const bubble = document.createElement("div");
+
   bubble.className = "bubble";
+  bubble.textContent = text;
 
-  const textElement = document.createElement("span");
-  bubble.appendChild(textElement);
+  const position = getPosition();
 
-  const positions = [-34, -17, 0, 17, 34];
-  const position = positions[Math.floor(Math.random() * positions.length)];
-
-  bubble.style.left = `calc(50% + ${position}%)`;
-
-  const riseDuration = 19 + Math.random() * 3;
-  const drift = (Math.random() * 50 - 25).toFixed(0) + "px";
-
-  bubble.style.setProperty("--rise-duration", riseDuration + "s");
-  bubble.style.setProperty("--drift", drift);
+  bubble.style.left = position.left;
 
   stage.appendChild(bubble);
 
-  const animation = bubble.getAnimations()[0];
+  /*
+    Durasi perjalanan dibuat cukup panjang
+    agar gelembung bergerak lembut dan tidak
+    terlalu cepat meninggalkan layar.
+  */
 
-  if (animation) {
-    activeAnimations.push(animation);
-  }
+  const travelDuration = 15000 + Math.random() * 3000;
 
-  const job = { timer: null };
-  typingJobs.push(job);
+  const animation = bubble.animate(
+    [
+      {
+        transform: "translate(-50%, 0)"
+      },
+      {
+        transform:
+          `translate(calc(-50% + ${position.drift}), -130vh)`
+      }
+    ],
+    {
+      duration: travelDuration,
+      easing: "linear",
+      fill: "forwards"
+    }
+  );
 
-  waitForBubble(bubble, textElement, text, duration, job);
+  activeAnimations.push(animation);
+
+  /*
+    Hapus elemen setelah benar-benar selesai
+    keluar dari area layar.
+  */
+
+  animation.onfinish = () => {
+    bubble.remove();
+
+    const index = activeAnimations.indexOf(animation);
+
+    if (index !== -1) {
+      activeAnimations.splice(index, 1);
+    }
+  };
 }
 
-/* Salju */
+/* =================================
+   EFEK SALJU
+================================= */
+
 function createSnow() {
   const snow = document.getElementById("snow");
 
@@ -336,10 +371,13 @@ function createSnow() {
 
     flake.className = "flake";
     flake.textContent = "❄";
+
     flake.style.left = Math.random() * 100 + "%";
     flake.style.fontSize = (8 + Math.random() * 10) + "px";
-    flake.style.animationDuration = (7 + Math.random() * 10) + "s";
-    flake.style.animationDelay = (Math.random() * 10) + "s";
+    flake.style.animationDuration =
+      (7 + Math.random() * 10) + "s";
+    flake.style.animationDelay =
+      (Math.random() * 10) + "s";
 
     snow.appendChild(flake);
   }
@@ -347,11 +385,19 @@ function createSnow() {
 
 createSnow();
 
-/* Sinkronisasi lirik */
+/* =================================
+   UPDATE TIMING LIRIK
+================================= */
+
 function update() {
   if (!running) return;
 
   elapsed = (Date.now() - startTime) / 1000;
+
+  /*
+    Lirik muncul tepat berdasarkan timestamp.
+    Tidak menunggu animasi sebelumnya selesai.
+  */
 
   while (
     nextLyric < lyrics.length &&
@@ -360,18 +406,26 @@ function update() {
     const [text, start, end] = lyrics[nextLyric];
 
     createBubble(text, end - start);
+
     nextLyric++;
   }
 
-  progress.style.width =
-    Math.min(elapsed / totalDuration * 100, 100) + "%";
+  const percentage = Math.min(
+    elapsed / totalDuration * 100,
+    100
+  );
+
+  progress.style.width = percentage + "%";
 
   timeDisplay.textContent =
-    formatTime(Math.min(elapsed, totalDuration)) + " / 00:28";
+    formatTime(Math.min(elapsed, totalDuration)) +
+    " / 00:28";
 
   if (elapsed >= totalDuration) {
     elapsed = totalDuration;
     running = false;
+    finished = true;
+
     playBtn.textContent = "▶ Play";
     return;
   }
@@ -379,88 +433,76 @@ function update() {
   animationFrame = requestAnimationFrame(update);
 }
 
-/* Play */
+/* =================================
+   PLAY
+================================= */
+
 function play() {
-  if (running || elapsed >= totalDuration) return;
+  if (running || finished) return;
 
   running = true;
+
   startTime = Date.now() - elapsed * 1000;
 
-  activeAnimations.forEach(animation => animation.play());
-
-  // Lanjutkan proses menunggu gelembung dan mengetik
-  typingJobs.forEach(job => {
-    if (job.timer) clearTimeout(job.timer);
-  });
-
-  typingJobs = [];
-
-  // Lanjutkan gelembung yang belum mulai mengetik
-  document.querySelectorAll(".bubble").forEach(bubble => {
-    const textElement = bubble.querySelector("span");
-
-    const lyricText = bubble.dataset.lyric;
-    if (lyricText && !textElement.textContent) {
-      const lyric = lyrics.find(item => item[0] === lyricText);
-      if (lyric) {
-        const job = { timer: null };
-        typingJobs.push(job);
-        waitForBubble(
-          bubble,
-          textElement,
-          lyric[0],
-          lyric[2] - lyric[1],
-          job
-        );
-      }
-    }
+  activeAnimations.forEach(animation => {
+    animation.play();
   });
 
   playBtn.textContent = "▶ Playing";
+
   update();
 }
 
-/* Pause */
+/* =================================
+   PAUSE
+================================= */
+
 function pause() {
   if (!running) return;
 
   elapsed = (Date.now() - startTime) / 1000;
+
   running = false;
 
   cancelAnimationFrame(animationFrame);
 
-  typingTimers.forEach(clearTimeout);
-  typingTimers = [];
-
-  activeAnimations.forEach(animation => animation.pause());
+  activeAnimations.forEach(animation => {
+    animation.pause();
+  });
 
   playBtn.textContent = "▶ Play";
 }
 
-/* Restart */
+/* =================================
+   RESTART
+================================= */
+
 function restart() {
   running = false;
+  finished = false;
 
   cancelAnimationFrame(animationFrame);
 
-  typingTimers.forEach(clearTimeout);
-  typingTimers = [];
+  activeAnimations.forEach(animation => {
+    animation.cancel();
+  });
 
-  activeAnimations.forEach(animation => animation.cancel());
-
-  activeAnimations = [];
-  typingJobs = [];
+  activeAnimations.length = 0;
 
   stage.innerHTML = "";
+
   elapsed = 0;
   nextLyric = 0;
+  lastPosition = -1;
 
   progress.style.width = "0%";
   timeDisplay.textContent = "00:00 / 00:28";
+
   playBtn.textContent = "▶ Play";
 
   play();
 }
+
 </script>
 
 </body>
