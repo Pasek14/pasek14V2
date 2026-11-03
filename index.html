@@ -1,222 +1,4 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merry Christmas</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow: hidden;
-  font-family: Georgia, serif;
-  color: white;
-  background:
-    radial-gradient(ellipse at 50% 20%, #8d1725 0%, transparent 55%),
-    linear-gradient(160deg, #210609, #510b16 55%, #170306);
-}
-
-.container {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 35px 16px 20px;
-}
-
-.heading {
-  text-align: center;
-  flex-shrink: 0;
-  margin-bottom: 15px;
-}
-
-.heading h1 {
-  font-size: clamp(30px, 6vw, 55px);
-  margin: 0;
-  font-weight: normal;
-  letter-spacing: 2px;
-  text-shadow: 0 0 20px #ff5268;
-}
-
-.heading p {
-  margin-top: 8px;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: #ffc5cb;
-}
-
-.stage {
-  position: relative;
-  width: min(850px, 100%);
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.bubble {
-  position: absolute;
-  left: 50%;
-  bottom: -90px;
-  width: max-content;
-  max-width: min(85%, 570px);
-  padding: 13px 21px;
-  border: 1px solid rgba(255, 220, 225, .3);
-  border-radius: 24px;
-  background: rgba(255, 235, 238, .13);
-  backdrop-filter: blur(9px);
-  box-shadow: 0 5px 25px rgba(0, 0, 0, .18);
-  color: #fff4f5;
-  font-family: Arial, sans-serif;
-  font-size: clamp(14px, 2.5vw, 19px);
-  line-height: 1.5;
-  text-align: center;
-  overflow-wrap: anywhere;
-  transform: translateX(-50%);
-  animation: rise var(--rise-duration) linear forwards;
-  will-change: transform;
-}
-
-.bubble::before {
-  content: "";
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.35);
-  top: 7px;
-  left: 12px;
-}
-
-@keyframes rise {
-  from {
-    transform: translate(-50%, 0);
-  }
-  to {
-    transform: translate(calc(-50% + var(--drift)), -125vh);
-  }
-}
-
-.controls {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  padding: 14px 0 4px;
-  flex-shrink: 0;
-}
-
-button {
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 30px;
-  padding: 10px 23px;
-  color: white;
-  background: rgba(255,255,255,.12);
-  font-size: 13px;
-  cursor: pointer;
-  transition: .2s;
-}
-
-button:hover {
-  background: rgba(255,255,255,.25);
-}
-
-.progress {
-  width: min(300px, 80%);
-  height: 3px;
-  background: rgba(255,255,255,.2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 7px;
-  flex-shrink: 0;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  background: #ffc1ca;
-}
-
-.time {
-  margin-top: 7px;
-  font: 11px Arial, sans-serif;
-  color: #eeb9c0;
-  flex-shrink: 0;
-}
-
-/* Salju */
-.snow {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.flake {
-  position: absolute;
-  top: -15px;
-  color: white;
-  opacity: .55;
-  animation: snowfall linear infinite;
-}
-
-@keyframes snowfall {
-  to {
-    transform: translateY(110vh) translateX(35px);
-  }
-}
-
-@media (max-height: 600px) {
-  .container {
-    padding-top: 15px;
-  }
-  .heading h1 {
-    font-size: 30px;
-  }
-  .heading p {
-    margin-top: 4px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="snow" id="snow"></div>
-
-<main class="container">
-
-  <header class="heading">
-    <h1>Merry Christmas</h1>
-    <p>PLEASE DON'T CALL</p>
-  </header>
-
-  <section class="stage" id="stage"></section>
-
-  <div class="progress">
-    <div class="progress-fill" id="progress"></div>
-  </div>
-
-  <div class="time" id="time">00:00 / 00:28</div>
-
-  <div class="controls">
-    <button id="playBtn" onclick="play()">▶ Play</button>
-    <button onclick="pause()">Ⅱ Pause</button>
-    <button onclick="restart()">↻ Restart</button>
-  </div>
-
-</main>
-
-<script>
 const lyrics = [
   ["I would rather burn forever", 1, 3],
   ["But you should know", 3, 5],
@@ -246,17 +28,72 @@ let typingTimers = [];
 let activeAnimations = [];
 
 function formatTime(seconds) {
-  const s = Math.floor(seconds);
-  return `00:${String(s).padStart(2, "0")}`;
+  return "00:" + String(Math.floor(seconds)).padStart(2, "0");
 }
 
-/* Efek ketik per huruf */
+function createBubble(text, duration) {
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+
+  const textElement = document.createElement("span");
+  bubble.appendChild(textElement);
+
+  const positions = [-34, -17, 0, 17, 34];
+  const position = positions[Math.floor(Math.random() * positions.length)];
+
+  bubble.style.left = `calc(50% + ${position}%)`;
+
+  const riseDuration = 19 + Math.random() * 3;
+  const drift = (Math.random() * 50 - 25).toFixed(0) + "px";
+
+  bubble.style.setProperty("--rise-duration", riseDuration + "s");
+  bubble.style.setProperty("--drift", drift);
+
+  stage.appendChild(bubble);
+
+  const animation = bubble.getAnimations()[0];
+
+  if (animation) {
+    activeAnimations.push(animation);
+  }
+
+  // Tunggu sampai gelembung benar-benar terlihat,
+  // baru mulai mengetik.
+  const waitUntilVisible = () => {
+    if (!running) {
+      const timer = setTimeout(waitUntilVisible, 100);
+      typingTimers.push(timer);
+      return;
+    }
+
+    const rect = bubble.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+
+    const fullyVisible =
+      rect.top >= stageRect.top &&
+      rect.bottom <= stageRect.bottom;
+
+    if (fullyVisible) {
+      typeText(textElement, text, duration);
+    } else {
+      const timer = setTimeout(waitUntilVisible, 80);
+      typingTimers.push(timer);
+    }
+  };
+
+  waitUntilVisible();
+}
+
 function typeText(element, text, duration) {
   let index = 0;
-  const speed = Math.max(25, Math.min(65, (duration * 1000) / text.length));
+  const speed = Math.max(35, Math.min(75, duration * 1000 / text.length));
 
   function type() {
-    if (!running) return;
+    if (!running) {
+      const timer = setTimeout(type, 100);
+      typingTimers.push(timer);
+      return;
+    }
 
     element.textContent = text.slice(0, index + 1);
     index++;
@@ -270,37 +107,6 @@ function typeText(element, text, duration) {
   type();
 }
 
-/* Membuat gelembung baru */
-function createBubble(text, duration) {
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
-
-  const textElement = document.createElement("span");
-  bubble.appendChild(textElement);
-
-  // Posisi horizontal acak
-  const positions = [-34, -17, 0, 17, 34];
-  const randomPosition =
-    positions[Math.floor(Math.random() * positions.length)];
-
-  bubble.style.left = `calc(50% + ${randomPosition}%)`;
-
-  // Kecepatan naik dibuat konsisten dan halus
-  const riseDuration = 19 + Math.random() * 3;
-  const drift = (Math.random() * 50 - 25).toFixed(0) + "px";
-
-  bubble.style.setProperty("--rise-duration", riseDuration + "s");
-  bubble.style.setProperty("--drift", drift);
-
-  stage.appendChild(bubble);
-
-  const animation = bubble.getAnimations()[0];
-  if (animation) activeAnimations.push(animation);
-
-  typeText(textElement, text, duration);
-}
-
-/* Membuat salju */
 function createSnow() {
   const snow = document.getElementById("snow");
 
@@ -318,23 +124,20 @@ function createSnow() {
 
 createSnow();
 
-/* Pemutar waktu lirik */
 function update() {
   if (!running) return;
 
   elapsed = (Date.now() - startTime) / 1000;
 
-  while (
-    nextLyric < lyrics.length &&
-    elapsed >= lyrics[nextLyric][1]
-  ) {
+  while (nextLyric < lyrics.length && elapsed >= lyrics[nextLyric][1]) {
     const [text, start, end] = lyrics[nextLyric];
     createBubble(text, end - start);
     nextLyric++;
   }
 
-  const percentage = Math.min(elapsed / totalDuration * 100, 100);
-  progress.style.width = percentage + "%";
+  progress.style.width =
+    Math.min(elapsed / totalDuration * 100, 100) + "%";
+
   timeDisplay.textContent =
     formatTime(Math.min(elapsed, totalDuration)) + " / 00:28";
 
@@ -354,7 +157,6 @@ function play() {
   running = true;
   startTime = Date.now() - elapsed * 1000;
 
-  // Lanjutkan animasi yang sempat dijeda
   activeAnimations.forEach(animation => animation.play());
 
   playBtn.textContent = "▶ Playing";
@@ -368,6 +170,7 @@ function pause() {
   running = false;
 
   cancelAnimationFrame(animationFrame);
+
   typingTimers.forEach(clearTimeout);
   typingTimers = [];
 
@@ -396,7 +199,3 @@ function restart() {
 
   play();
 }
-</script>
-
-</body>
-</html>
