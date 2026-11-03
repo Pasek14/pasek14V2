@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Merry Christmas, Please Don't Call</title>
 
 <style>
@@ -16,16 +17,19 @@
 }
 
 body {
+  width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(
-    circle at 50% 40%,
-    #a51d32 0%,
-    #710f21 55%,
-    #29050d 100%
-  );
   color: white;
   font-family: 'DM Sans', sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      #a51d32 0%,
+      #710f21 55%,
+      #29050d 100%
+    );
 }
 
 body::before {
@@ -33,7 +37,9 @@ body::before {
   position: fixed;
   inset: 0;
   background: radial-gradient(
-    circle, transparent 20%, rgba(0,0,0,.25) 100%
+    circle,
+    transparent 20%,
+    rgba(0,0,0,.25) 100%
   );
   pointer-events: none;
   z-index: 1;
@@ -62,14 +68,17 @@ body::before {
   }
 }
 
-/* MAIN */
+/* MAIN CONTAINER */
 
 .container {
   position: relative;
   z-index: 2;
-  height: 100vh;
+
   width: 100%;
+  height: 100vh;
+
   padding: 25px 18px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,6 +88,7 @@ body::before {
 .top-label {
   position: absolute;
   top: 35px;
+
   font-size: 10px;
   letter-spacing: 5px;
   color: #f5c4ca;
@@ -98,64 +108,84 @@ h1 {
   margin-top: 5px;
 }
 
-/* LYRICS */
+/* LYRIC AREA */
 
 .lyric-stage {
+  position: relative;
+
   width: 100%;
   max-width: 750px;
-  height: 310px;
-  margin-top: 30px;
+  height: 350px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
+  margin-top: 25px;
 
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-
-  scrollbar-width: none;
+  overflow: hidden;
 }
 
-.lyric-stage::-webkit-scrollbar {
-  display: none;
-}
+/* BUBBLE */
 
 .bubble {
-  flex-shrink: 0;
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
   width: fit-content;
-  max-width: 90%;
-  padding: 15px 22px;
+  max-width: min(82%, 570px);
+
+  padding: 14px 21px;
 
   border: 1px solid rgba(255,255,255,.3);
-  border-radius: 24px;
+  border-radius: 25px;
 
-  background: rgba(255,255,255,.10);
+  background: rgba(255,255,255,.11);
+
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
   box-shadow: 0 8px 30px rgba(0,0,0,.12);
 
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(19px, 4.2vw, 29px);
+  font-size: clamp(19px, 4vw, 28px);
   line-height: 1.35;
   text-align: center;
 
   opacity: 1;
-  animation: bubbleRise .85s cubic-bezier(.22,1,.36,1) forwards;
+
+  transform:
+    translateX(calc(-50% + var(--offset)));
+
+  animation:
+    floatBubble var(--travel-time) cubic-bezier(.25,.1,.25,1) forwards;
 }
 
-@keyframes bubbleRise {
-  from {
-    transform: translateY(35px) scale(.96);
-    opacity: 0;
+/* SLOW FLOATING */
+
+@keyframes floatBubble {
+
+  0% {
+    transform:
+      translate(calc(-50% + var(--offset)), 0);
   }
 
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
+  25% {
+    transform:
+      translate(calc(-50% + var(--offset) + 5px), -20px);
+  }
+
+  50% {
+    transform:
+      translate(calc(-50% + var(--offset) - 5px), -50px);
+  }
+
+  75% {
+    transform:
+      translate(calc(-50% + var(--offset) + 3px), -85px);
+  }
+
+  100% {
+    transform:
+      translate(calc(-50% + var(--offset)), -125px);
   }
 }
 
@@ -164,17 +194,21 @@ h1 {
 .controls {
   display: flex;
   gap: 10px;
-  margin-top: 28px;
+  margin-top: 25px;
 }
 
 button {
   padding: 12px 20px;
+
   border: 1px solid rgba(255,255,255,.4);
   border-radius: 30px;
+
   background: rgba(255,255,255,.1);
   color: white;
+
   font-size: 11px;
   letter-spacing: 1px;
+
   cursor: pointer;
   transition: .25s;
 }
@@ -184,10 +218,18 @@ button:hover {
   transform: translateY(-2px);
 }
 
+button:active {
+  transform: scale(.95);
+}
+
+/* PROGRESS */
+
 .progress {
   width: min(230px, 65vw);
   height: 3px;
-  margin-top: 24px;
+
+  margin-top: 22px;
+
   background: rgba(255,255,255,.2);
   border-radius: 10px;
   overflow: hidden;
@@ -208,19 +250,24 @@ button:hover {
 .footer {
   position: absolute;
   bottom: 27px;
+
   font-size: 10px;
   letter-spacing: 3px;
   color: #eab5bd;
   opacity: .7;
 }
 
+/* MOBILE */
+
 @media(max-width: 500px) {
+
   .lyric-stage {
-    height: 290px;
+    height: 350px;
   }
 
   .bubble {
-    padding: 13px 17px;
+    max-width: 86%;
+    padding: 12px 16px;
   }
 
   .controls {
@@ -231,6 +278,7 @@ button:hover {
     padding: 11px 14px;
   }
 }
+
 </style>
 </head>
 
@@ -240,170 +288,295 @@ button:hover {
 
 <main class="container">
 
-  <div class="top-label">A CHRISTMAS MEMORY</div>
-
-  <h1>Merry Christmas</h1>
-  <div class="subtitle">PLEASE DON'T CALL</div>
-
-  <div class="lyric-stage" id="stage">
-    <div style="color:#f5c4ca;font-size:13px">
-      Press play to begin...
-    </div>
+  <div class="top-label">
+    A CHRISTMAS MEMORY
   </div>
 
+  <h1>Merry Christmas</h1>
+
+  <div class="subtitle">
+    PLEASE DON'T CALL
+  </div>
+
+  <div class="lyric-stage" id="stage"></div>
+
   <div class="controls">
-    <button onclick="playLyrics()">▶ PLAY</button>
-    <button onclick="pauseLyrics()">Ⅱ PAUSE</button>
-    <button onclick="restartLyrics()">↻ RESTART</button>
+
+    <button onclick="playLyrics()">
+      ▶ PLAY
+    </button>
+
+    <button onclick="pauseLyrics()">
+      Ⅱ PAUSE
+    </button>
+
+    <button onclick="restartLyrics()">
+      ↻ RESTART
+    </button>
+
   </div>
 
   <div class="progress">
     <div class="progress-bar" id="bar"></div>
   </div>
 
-  <div class="time" id="time">00:00</div>
+  <div class="time" id="time">
+    00:00
+  </div>
 
-  <div class="footer">SOME MEMORIES NEVER FADE</div>
+  <div class="footer">
+    SOME MEMORIES NEVER FADE
+  </div>
 
 </main>
 
 <script>
 
-// ====================================
+// ======================================
 // 1. LYRICS + TIMING
-// ====================================
+// ======================================
 
-// Waktu asli dikurangi 35 detik.
-// Format: [lirik, waktu mulai, waktu selesai]
+// Format:
+// ["Lirik", waktu mulai, waktu selesai]
 
 const lyrics = [
+
   ["I would rather burn forever", 1, 3],
+
   ["But you should know", 3, 5],
+
   ["that I died slow", 5, 8],
+
   ["Running through the halls of your haunted home", 8, 12],
+
   ["And the toughest part", 12, 14],
+
   ["is that we both know", 14, 16],
+
   ["What happened to you", 16, 18],
+
   ["Why you're out on your own", 18, 21],
+
   ["Merry Christmas", 21, 23],
+
   ["please don't call", 23, 28]
+
 ];
 
-// ====================================
-// 2. SNOW
-// ====================================
+const totalDuration = 28;
+
+
+// ======================================
+// 2. SNOW GENERATOR
+// ======================================
 
 const snow = document.getElementById("snow");
 
 for (let i = 0; i < 65; i++) {
+
   const flake = document.createElement("div");
 
   flake.className = "snowflake";
-  flake.textContent = Math.random() > .5 ? "❄" : "•";
 
-  flake.style.left = Math.random() * 100 + "vw";
-  flake.style.fontSize = (Math.random() * 10 + 5) + "px";
-  flake.style.animationDuration = (Math.random() * 8 + 6) + "s";
-  flake.style.animationDelay = (Math.random() * -15) + "s";
+  flake.textContent =
+    Math.random() > .5 ? "❄" : "•";
+
+  flake.style.left =
+    Math.random() * 100 + "vw";
+
+  flake.style.fontSize =
+    (Math.random() * 10 + 5) + "px";
+
+  flake.style.animationDuration =
+    (Math.random() * 8 + 6) + "s";
+
+  flake.style.animationDelay =
+    (Math.random() * -15) + "s";
 
   snow.appendChild(flake);
+
 }
 
-// ====================================
-// 3. LYRIC ENGINE
-// ====================================
+
+// ======================================
+// 3. VARIABLES
+// ======================================
 
 const stage = document.getElementById("stage");
+
 const bar = document.getElementById("bar");
+
 const timeDisplay = document.getElementById("time");
 
-const totalDuration = 28;
-
 let playing = false;
+
 let elapsed = 0;
+
 let startTime = 0;
-let timer = null;
-let frame = null;
+
 let index = 0;
 
-function formatTime(seconds) {
-  const min = Math.floor(seconds / 60);
-  const sec = Math.floor(seconds % 60);
+let frame = null;
 
-  return String(min).padStart(2, "0") + ":" +
-         String(sec).padStart(2, "0");
+let bubbles = [];
+
+
+// ======================================
+// 4. RANDOM HORIZONTAL POSITION
+// ======================================
+
+function randomPosition() {
+
+  const positions = [
+    -75,
+    -40,
+    0,
+    40,
+    75
+  ];
+
+  return positions[
+    Math.floor(Math.random() * positions.length)
+  ];
+
 }
 
-// ====================================
-// 4. DISPLAY BUBBLE
-// ====================================
 
-function showLyric(text) {
+// ======================================
+// 5. CREATE BUBBLE
+// ======================================
+
+function showLyric(text, duration) {
+
   const bubble = document.createElement("div");
 
   bubble.className = "bubble";
+
   bubble.textContent = text;
+
+  // Random position
+  const offset = randomPosition();
+
+  bubble.style.setProperty(
+    "--offset",
+    offset + "px"
+  );
+
+  // Movement speed follows lyric duration
+  bubble.style.setProperty(
+    "--travel-time",
+    duration + "s"
+  );
 
   stage.appendChild(bubble);
 
-  requestAnimationFrame(() => {
-    stage.scrollTo({
-      top: stage.scrollHeight,
-      behavior: "smooth"
-    });
-  });
+  // Store animation for pause and resume
+  const animation = bubble.getAnimations()[0];
+
+  bubbles.push(animation);
+
 }
 
-// ====================================
-// 5. TIMING ENGINE
-// ====================================
 
-function update() {
+// ======================================
+// 6. UPDATE LYRICS
+// ======================================
+
+function updateLyrics() {
+
   if (!playing) return;
 
   elapsed = (Date.now() - startTime) / 1000;
 
-  // Progress bar
-  bar.style.width =
-    Math.min((elapsed / totalDuration) * 100, 100) + "%";
-
-  timeDisplay.textContent = formatTime(elapsed);
-
-  // Show lyrics at exact start time
+  // Check lyric timing
   while (
     index < lyrics.length &&
     elapsed >= lyrics[index][1]
   ) {
-    showLyric(lyrics[index][0]);
+
+    const text = lyrics[index][0];
+
+    const duration =
+      lyrics[index][2] - lyrics[index][1];
+
+    showLyric(text, duration);
+
     index++;
+
   }
+
+  // Progress bar
+  bar.style.width =
+    Math.min(
+      elapsed / totalDuration * 100,
+      100
+    ) + "%";
+
+  timeDisplay.textContent =
+    formatTime(elapsed);
 
   if (elapsed >= totalDuration) {
+
     pauseLyrics();
+
     return;
+
   }
 
-  frame = requestAnimationFrame(update);
+  frame = requestAnimationFrame(updateLyrics);
+
 }
 
-// ====================================
-// 6. PLAY
-// ====================================
+
+// ======================================
+// 7. TIME FORMAT
+// ======================================
+
+function formatTime(seconds) {
+
+  const min = Math.floor(seconds / 60);
+
+  const sec = Math.floor(seconds % 60);
+
+  return (
+    String(min).padStart(2, "0") +
+    ":" +
+    String(sec).padStart(2, "0")
+  );
+
+}
+
+
+// ======================================
+// 8. PLAY
+// ======================================
 
 function playLyrics() {
+
   if (playing || elapsed >= totalDuration) return;
 
   playing = true;
+
   startTime = Date.now() - elapsed * 1000;
 
-  update();
+  // Resume existing bubble animations
+  bubbles.forEach(animation => {
+    if (animation.playState === "paused") {
+      animation.play();
+    }
+  });
+
+  updateLyrics();
+
 }
 
-// ====================================
-// 7. PAUSE
-// ====================================
+
+// ======================================
+// 9. PAUSE
+// ======================================
 
 function pauseLyrics() {
+
   if (!playing) return;
 
   elapsed = (Date.now() - startTime) / 1000;
@@ -411,26 +584,43 @@ function pauseLyrics() {
   playing = false;
 
   cancelAnimationFrame(frame);
+
+  // Freeze all bubbles
+  bubbles.forEach(animation => {
+    animation.pause();
+  });
+
 }
 
-// ====================================
-// 8. RESTART
-// ====================================
+
+// ======================================
+// 10. RESTART
+// ======================================
 
 function restartLyrics() {
+
   playing = false;
 
   cancelAnimationFrame(frame);
 
+  bubbles.forEach(animation => {
+    animation.cancel();
+  });
+
+  bubbles = [];
+
   elapsed = 0;
+
   index = 0;
 
   stage.innerHTML = "";
 
   bar.style.width = "0%";
+
   timeDisplay.textContent = "00:00";
 
   playLyrics();
+
 }
 
 </script>
