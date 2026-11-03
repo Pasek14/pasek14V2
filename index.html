@@ -4,625 +4,398 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Merry Christmas, Please Don't Call</title>
+<title>Merry Christmas</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400&display=swap');
-
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  width: 100%;
-  height: 100vh;
+  margin: 0;
+  min-height: 100vh;
   overflow: hidden;
+  font-family: Georgia, serif;
   color: white;
-  font-family: 'DM Sans', sans-serif;
-
   background:
-    radial-gradient(
-      circle at 50% 40%,
-      #a51d32 0%,
-      #710f21 55%,
-      #29050d 100%
-    );
+    radial-gradient(ellipse at 50% 20%, #8d1725 0%, transparent 55%),
+    linear-gradient(160deg, #210609, #510b16 55%, #170306);
 }
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    circle,
-    transparent 20%,
-    rgba(0,0,0,.25) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* SNOW */
-
-#snow {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.snowflake {
-  position: absolute;
-  top: -20px;
-  color: white;
-  animation: snowfall linear infinite;
-  opacity: .65;
-}
-
-@keyframes snowfall {
-  to {
-    transform: translate(40px, 110vh) rotate(360deg);
-  }
-}
-
-/* MAIN CONTAINER */
 
 .container {
   position: relative;
   z-index: 2;
-
   width: 100%;
   height: 100vh;
-
-  padding: 25px 18px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 35px 16px 20px;
 }
 
-.top-label {
-  position: absolute;
-  top: 35px;
-
-  font-size: 10px;
-  letter-spacing: 5px;
-  color: #f5c4ca;
-}
-
-h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(40px, 8vw, 70px);
-  font-weight: 400;
+.heading {
   text-align: center;
+  flex-shrink: 0;
+  margin-bottom: 15px;
 }
 
-.subtitle {
+.heading h1 {
+  font-size: clamp(30px, 6vw, 55px);
+  margin: 0;
+  font-weight: normal;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px #ff5268;
+}
+
+.heading p {
+  margin-top: 8px;
+  font-family: Arial, sans-serif;
   font-size: 11px;
-  letter-spacing: 5px;
-  color: #f4b9c1;
-  margin-top: 5px;
+  letter-spacing: 6px;
+  color: #ffc5cb;
 }
 
-/* LYRIC AREA */
-
-.lyric-stage {
+.stage {
   position: relative;
-
-  width: 100%;
-  max-width: 750px;
-  height: 350px;
-
-  margin-top: 25px;
-
+  width: min(850px, 100%);
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
-/* BUBBLE */
-
 .bubble {
   position: absolute;
-
   left: 50%;
-  bottom: 5px;
-
-  width: fit-content;
-  max-width: min(82%, 570px);
-
-  padding: 14px 21px;
-
-  border: 1px solid rgba(255,255,255,.3);
-  border-radius: 25px;
-
-  background: rgba(255,255,255,.11);
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  box-shadow: 0 8px 30px rgba(0,0,0,.12);
-
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(19px, 4vw, 28px);
-  line-height: 1.35;
+  bottom: -90px;
+  width: max-content;
+  max-width: min(85%, 570px);
+  padding: 13px 21px;
+  border: 1px solid rgba(255, 220, 225, .3);
+  border-radius: 24px;
+  background: rgba(255, 235, 238, .13);
+  backdrop-filter: blur(9px);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, .18);
+  color: #fff4f5;
+  font-family: Arial, sans-serif;
+  font-size: clamp(14px, 2.5vw, 19px);
+  line-height: 1.5;
   text-align: center;
-
-  opacity: 1;
-
-  transform:
-    translateX(calc(-50% + var(--offset)));
-
-  animation:
-    floatBubble var(--travel-time) cubic-bezier(.25,.1,.25,1) forwards;
+  overflow-wrap: anywhere;
+  transform: translateX(-50%);
+  animation: rise var(--rise-duration) linear forwards;
+  will-change: transform;
 }
 
-/* SLOW FLOATING */
-
-@keyframes floatBubble {
-
-  0% {
-    transform:
-      translate(calc(-50% + var(--offset)), 0);
-  }
-
-  25% {
-    transform:
-      translate(calc(-50% + var(--offset) + 5px), -20px);
-  }
-
-  50% {
-    transform:
-      translate(calc(-50% + var(--offset) - 5px), -50px);
-  }
-
-  75% {
-    transform:
-      translate(calc(-50% + var(--offset) + 3px), -85px);
-  }
-
-  100% {
-    transform:
-      translate(calc(-50% + var(--offset)), -125px);
-  }
+.bubble::before {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  top: 7px;
+  left: 12px;
 }
 
-/* CONTROLS */
+@keyframes rise {
+  from {
+    transform: translate(-50%, 0);
+  }
+  to {
+    transform: translate(calc(-50% + var(--drift)), -125vh);
+  }
+}
 
 .controls {
   display: flex;
-  gap: 10px;
-  margin-top: 25px;
+  gap: 12px;
+  justify-content: center;
+  padding: 14px 0 4px;
+  flex-shrink: 0;
 }
 
 button {
-  padding: 12px 20px;
-
-  border: 1px solid rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.25);
   border-radius: 30px;
-
-  background: rgba(255,255,255,.1);
+  padding: 10px 23px;
   color: white;
-
-  font-size: 11px;
-  letter-spacing: 1px;
-
+  background: rgba(255,255,255,.12);
+  font-size: 13px;
   cursor: pointer;
-  transition: .25s;
+  transition: .2s;
 }
 
 button:hover {
   background: rgba(255,255,255,.25);
-  transform: translateY(-2px);
 }
-
-button:active {
-  transform: scale(.95);
-}
-
-/* PROGRESS */
 
 .progress {
-  width: min(230px, 65vw);
+  width: min(300px, 80%);
   height: 3px;
-
-  margin-top: 22px;
-
   background: rgba(255,255,255,.2);
   border-radius: 10px;
   overflow: hidden;
+  margin-top: 7px;
+  flex-shrink: 0;
 }
 
-.progress-bar {
+.progress-fill {
   height: 100%;
   width: 0%;
-  background: white;
+  background: #ffc1ca;
 }
 
 .time {
-  margin-top: 10px;
-  font-size: 11px;
-  color: #f5c4ca;
+  margin-top: 7px;
+  font: 11px Arial, sans-serif;
+  color: #eeb9c0;
+  flex-shrink: 0;
 }
 
-.footer {
+/* Salju */
+.snow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.flake {
   position: absolute;
-  bottom: 27px;
-
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #eab5bd;
-  opacity: .7;
+  top: -15px;
+  color: white;
+  opacity: .55;
+  animation: snowfall linear infinite;
 }
 
-/* MOBILE */
-
-@media(max-width: 500px) {
-
-  .lyric-stage {
-    height: 350px;
-  }
-
-  .bubble {
-    max-width: 86%;
-    padding: 12px 16px;
-  }
-
-  .controls {
-    gap: 6px;
-  }
-
-  button {
-    padding: 11px 14px;
+@keyframes snowfall {
+  to {
+    transform: translateY(110vh) translateX(35px);
   }
 }
 
+@media (max-height: 600px) {
+  .container {
+    padding-top: 15px;
+  }
+  .heading h1 {
+    font-size: 30px;
+  }
+  .heading p {
+    margin-top: 4px;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div id="snow"></div>
+<div class="snow" id="snow"></div>
 
 <main class="container">
 
-  <div class="top-label">
-    A CHRISTMAS MEMORY
-  </div>
+  <header class="heading">
+    <h1>Merry Christmas</h1>
+    <p>PLEASE DON'T CALL</p>
+  </header>
 
-  <h1>Merry Christmas</h1>
-
-  <div class="subtitle">
-    PLEASE DON'T CALL
-  </div>
-
-  <div class="lyric-stage" id="stage"></div>
-
-  <div class="controls">
-
-    <button onclick="playLyrics()">
-      ▶ PLAY
-    </button>
-
-    <button onclick="pauseLyrics()">
-      Ⅱ PAUSE
-    </button>
-
-    <button onclick="restartLyrics()">
-      ↻ RESTART
-    </button>
-
-  </div>
+  <section class="stage" id="stage"></section>
 
   <div class="progress">
-    <div class="progress-bar" id="bar"></div>
+    <div class="progress-fill" id="progress"></div>
   </div>
 
-  <div class="time" id="time">
-    00:00
-  </div>
+  <div class="time" id="time">00:00 / 00:28</div>
 
-  <div class="footer">
-    SOME MEMORIES NEVER FADE
+  <div class="controls">
+    <button id="playBtn" onclick="play()">▶ Play</button>
+    <button onclick="pause()">Ⅱ Pause</button>
+    <button onclick="restart()">↻ Restart</button>
   </div>
 
 </main>
 
 <script>
-
-// ======================================
-// 1. LYRICS + TIMING
-// ======================================
-
-// Format:
-// ["Lirik", waktu mulai, waktu selesai]
-
 const lyrics = [
-
   ["I would rather burn forever", 1, 3],
-
   ["But you should know", 3, 5],
-
   ["that I died slow", 5, 8],
-
   ["Running through the halls of your haunted home", 8, 12],
-
   ["And the toughest part", 12, 14],
-
   ["is that we both know", 14, 16],
-
   ["What happened to you", 16, 18],
-
   ["Why you're out on your own", 18, 21],
-
   ["Merry Christmas", 21, 23],
-
   ["please don't call", 23, 28]
-
 ];
 
 const totalDuration = 28;
 
-
-// ======================================
-// 2. SNOW GENERATOR
-// ======================================
-
-const snow = document.getElementById("snow");
-
-for (let i = 0; i < 65; i++) {
-
-  const flake = document.createElement("div");
-
-  flake.className = "snowflake";
-
-  flake.textContent =
-    Math.random() > .5 ? "❄" : "•";
-
-  flake.style.left =
-    Math.random() * 100 + "vw";
-
-  flake.style.fontSize =
-    (Math.random() * 10 + 5) + "px";
-
-  flake.style.animationDuration =
-    (Math.random() * 8 + 6) + "s";
-
-  flake.style.animationDelay =
-    (Math.random() * -15) + "s";
-
-  snow.appendChild(flake);
-
-}
-
-
-// ======================================
-// 3. VARIABLES
-// ======================================
-
 const stage = document.getElementById("stage");
-
-const bar = document.getElementById("bar");
-
+const progress = document.getElementById("progress");
 const timeDisplay = document.getElementById("time");
-
-let playing = false;
-
-let elapsed = 0;
+const playBtn = document.getElementById("playBtn");
 
 let startTime = 0;
+let elapsed = 0;
+let running = false;
+let animationFrame = null;
+let nextLyric = 0;
+let typingTimers = [];
+let activeAnimations = [];
 
-let index = 0;
-
-let frame = null;
-
-let bubbles = [];
-
-
-// ======================================
-// 4. RANDOM HORIZONTAL POSITION
-// ======================================
-
-function randomPosition() {
-
-  const positions = [
-    -75,
-    -40,
-    0,
-    40,
-    75
-  ];
-
-  return positions[
-    Math.floor(Math.random() * positions.length)
-  ];
-
+function formatTime(seconds) {
+  const s = Math.floor(seconds);
+  return `00:${String(s).padStart(2, "0")}`;
 }
 
+/* Efek ketik per huruf */
+function typeText(element, text, duration) {
+  let index = 0;
+  const speed = Math.max(25, Math.min(65, (duration * 1000) / text.length));
 
-// ======================================
-// 5. CREATE BUBBLE
-// ======================================
+  function type() {
+    if (!running) return;
 
-function showLyric(text, duration) {
+    element.textContent = text.slice(0, index + 1);
+    index++;
 
+    if (index < text.length) {
+      const timer = setTimeout(type, speed);
+      typingTimers.push(timer);
+    }
+  }
+
+  type();
+}
+
+/* Membuat gelembung baru */
+function createBubble(text, duration) {
   const bubble = document.createElement("div");
-
   bubble.className = "bubble";
 
-  bubble.textContent = text;
+  const textElement = document.createElement("span");
+  bubble.appendChild(textElement);
 
-  // Random position
-  const offset = randomPosition();
+  // Posisi horizontal acak
+  const positions = [-34, -17, 0, 17, 34];
+  const randomPosition =
+    positions[Math.floor(Math.random() * positions.length)];
 
-  bubble.style.setProperty(
-    "--offset",
-    offset + "px"
-  );
+  bubble.style.left = `calc(50% + ${randomPosition}%)`;
 
-  // Movement speed follows lyric duration
-  bubble.style.setProperty(
-    "--travel-time",
-    duration + "s"
-  );
+  // Kecepatan naik dibuat konsisten dan halus
+  const riseDuration = 19 + Math.random() * 3;
+  const drift = (Math.random() * 50 - 25).toFixed(0) + "px";
+
+  bubble.style.setProperty("--rise-duration", riseDuration + "s");
+  bubble.style.setProperty("--drift", drift);
 
   stage.appendChild(bubble);
 
-  // Store animation for pause and resume
   const animation = bubble.getAnimations()[0];
+  if (animation) activeAnimations.push(animation);
 
-  bubbles.push(animation);
-
+  typeText(textElement, text, duration);
 }
 
+/* Membuat salju */
+function createSnow() {
+  const snow = document.getElementById("snow");
 
-// ======================================
-// 6. UPDATE LYRICS
-// ======================================
+  for (let i = 0; i < 45; i++) {
+    const flake = document.createElement("span");
+    flake.className = "flake";
+    flake.textContent = "❄";
+    flake.style.left = Math.random() * 100 + "%";
+    flake.style.fontSize = (8 + Math.random() * 10) + "px";
+    flake.style.animationDuration = (7 + Math.random() * 10) + "s";
+    flake.style.animationDelay = (Math.random() * 10) + "s";
+    snow.appendChild(flake);
+  }
+}
 
-function updateLyrics() {
+createSnow();
 
-  if (!playing) return;
+/* Pemutar waktu lirik */
+function update() {
+  if (!running) return;
 
   elapsed = (Date.now() - startTime) / 1000;
 
-  // Check lyric timing
   while (
-    index < lyrics.length &&
-    elapsed >= lyrics[index][1]
+    nextLyric < lyrics.length &&
+    elapsed >= lyrics[nextLyric][1]
   ) {
-
-    const text = lyrics[index][0];
-
-    const duration =
-      lyrics[index][2] - lyrics[index][1];
-
-    showLyric(text, duration);
-
-    index++;
-
+    const [text, start, end] = lyrics[nextLyric];
+    createBubble(text, end - start);
+    nextLyric++;
   }
 
-  // Progress bar
-  bar.style.width =
-    Math.min(
-      elapsed / totalDuration * 100,
-      100
-    ) + "%";
-
+  const percentage = Math.min(elapsed / totalDuration * 100, 100);
+  progress.style.width = percentage + "%";
   timeDisplay.textContent =
-    formatTime(elapsed);
+    formatTime(Math.min(elapsed, totalDuration)) + " / 00:28";
 
   if (elapsed >= totalDuration) {
-
-    pauseLyrics();
-
+    elapsed = totalDuration;
+    running = false;
+    playBtn.textContent = "▶ Play";
     return;
-
   }
 
-  frame = requestAnimationFrame(updateLyrics);
-
+  animationFrame = requestAnimationFrame(update);
 }
 
+function play() {
+  if (running || elapsed >= totalDuration) return;
 
-// ======================================
-// 7. TIME FORMAT
-// ======================================
-
-function formatTime(seconds) {
-
-  const min = Math.floor(seconds / 60);
-
-  const sec = Math.floor(seconds % 60);
-
-  return (
-    String(min).padStart(2, "0") +
-    ":" +
-    String(sec).padStart(2, "0")
-  );
-
-}
-
-
-// ======================================
-// 8. PLAY
-// ======================================
-
-function playLyrics() {
-
-  if (playing || elapsed >= totalDuration) return;
-
-  playing = true;
-
+  running = true;
   startTime = Date.now() - elapsed * 1000;
 
-  // Resume existing bubble animations
-  bubbles.forEach(animation => {
-    if (animation.playState === "paused") {
-      animation.play();
-    }
-  });
+  // Lanjutkan animasi yang sempat dijeda
+  activeAnimations.forEach(animation => animation.play());
 
-  updateLyrics();
-
+  playBtn.textContent = "▶ Playing";
+  update();
 }
 
-
-// ======================================
-// 9. PAUSE
-// ======================================
-
-function pauseLyrics() {
-
-  if (!playing) return;
+function pause() {
+  if (!running) return;
 
   elapsed = (Date.now() - startTime) / 1000;
+  running = false;
 
-  playing = false;
+  cancelAnimationFrame(animationFrame);
+  typingTimers.forEach(clearTimeout);
+  typingTimers = [];
 
-  cancelAnimationFrame(frame);
+  activeAnimations.forEach(animation => animation.pause());
 
-  // Freeze all bubbles
-  bubbles.forEach(animation => {
-    animation.pause();
-  });
-
+  playBtn.textContent = "▶ Play";
 }
 
+function restart() {
+  running = false;
+  cancelAnimationFrame(animationFrame);
 
-// ======================================
-// 10. RESTART
-// ======================================
+  typingTimers.forEach(clearTimeout);
+  typingTimers = [];
 
-function restartLyrics() {
-
-  playing = false;
-
-  cancelAnimationFrame(frame);
-
-  bubbles.forEach(animation => {
-    animation.cancel();
-  });
-
-  bubbles = [];
-
-  elapsed = 0;
-
-  index = 0;
+  activeAnimations.forEach(animation => animation.cancel());
+  activeAnimations = [];
 
   stage.innerHTML = "";
+  elapsed = 0;
+  nextLyric = 0;
 
-  bar.style.width = "0%";
+  progress.style.width = "0%";
+  timeDisplay.textContent = "00:00 / 00:28";
+  playBtn.textContent = "▶ Play";
 
-  timeDisplay.textContent = "00:00";
-
-  playLyrics();
-
+  play();
 }
-
 </script>
 
 </body>
